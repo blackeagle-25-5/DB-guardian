@@ -1,13 +1,12 @@
 '''Implements a simple dashboard for WAF. This dashboard can be used for analizing the performed request to the server.'''
 
 import dash
-import dash_core_components as dcc
-import dash_html_components as html
+from dash import dcc, html
 from request import DBController
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import dash_table
+from dash import dash_table
 from dash.dependencies import Input, Output
 import numpy as np
 from flask import Flask, render_template
@@ -73,7 +72,7 @@ def generate_table(df, label):
             tooltip_data=[
                 {
                     'request': {'value': str(row['request']), 'type':'markdown'}
-                } for row in data_to_use.to_dict('rows')
+                } for row in data_to_use.to_dict('records')
             ],
             tooltip_duration = None,
             #style_table={'overflowX': 'auto'},
@@ -160,4 +159,4 @@ def review_request(request_id):
     return render_template('request.html', id = str(request_id), request = request, num_attacks = len(data), attacks = data, log = log)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)
